@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QuickGraph.Graphviz;
+using System;
 
 namespace QuickGraph.Samples
 {
@@ -10,8 +10,9 @@ namespace QuickGraph.Samples
         [TestMethod]
         public void RenderGraphWithGraphviz()
         {
-            var edges = new SEdge<int>[] { 
-                new SEdge<int>(1, 2), 
+            var edges = new SEdge<int>[]
+            {
+                new SEdge<int>(1, 2),
                 new SEdge<int>(0, 1),
                 new SEdge<int>(0, 3),
                 new SEdge<int>(2, 3)

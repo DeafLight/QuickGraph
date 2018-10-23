@@ -13,3 +13,5 @@ Removed in the meantime:
     - QuickGraph.FST
 - QuickGraph.FSA.Tests
 - QuickGraph.FST.Tests
+
+Check UndirectedGraph delegate serialization use cases (delegates can't be serialized in .NET standard)

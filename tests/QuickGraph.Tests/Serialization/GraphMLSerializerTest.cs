@@ -1,11 +1,9 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-using Microsoft.Pex.Framework;
 using System.Xml.XPath;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QuickGraph.Collections;
 
 namespace QuickGraph.Serialization
 {
@@ -91,7 +89,7 @@ namespace QuickGraph.Serialization
         }
     }
 
-    [TestClass, PexClass]
+    [TestClass]
     public partial class GraphMLSerializerIntegrationTest
     {
         [TestMethod]
@@ -112,7 +110,7 @@ namespace QuickGraph.Serialization
                 Console.Write(": {0} vertices, {1} edges", g.VertexCount, g.EdgeCount);
 
                 var vertices = new Dictionary<string, string>();
-                foreach(var v in g.Vertices)
+                foreach (var v in g.Vertices)
                     vertices.Add(v, v);
 
                 // check all nodes are loaded
@@ -120,7 +118,7 @@ namespace QuickGraph.Serialization
                 settings.XmlResolver = new GraphMLXmlResolver();
                 settings.ProhibitDtd = false;
                 settings.ValidationFlags = System.Xml.Schema.XmlSchemaValidationFlags.None;
-                using(var xreader = XmlReader.Create(graphmlFile, settings))
+                using (var xreader = XmlReader.Create(graphmlFile, settings))
                 {
                     var doc = new XPathDocument(xreader);
                     foreach (XPathNavigator node in doc.CreateNavigator().Select("/graphml/graph/node"))

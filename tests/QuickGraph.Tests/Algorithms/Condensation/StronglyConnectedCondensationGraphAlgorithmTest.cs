@@ -1,10 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using QuickGraph.Algorithms.Condensation;
-using Microsoft.Pex.Framework;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QuickGraph.Serialization;
+using System.Collections.Generic;
 
 namespace QuickGraph.Algorithms.Condensation
 {

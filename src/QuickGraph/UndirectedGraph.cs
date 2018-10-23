@@ -23,6 +23,8 @@ namespace QuickGraph
         private readonly bool allowParallelEdges = true;
         private readonly VertexEdgeDictionary<TVertex, TEdge> adjacentEdges =
             new VertexEdgeDictionary<TVertex, TEdge>();
+
+        [NonSerialized]
         private readonly EdgeEqualityComparer<TVertex, TEdge> edgeEqualityComparer;
         private int edgeCount = 0;
         private int edgeCapacity = 4;

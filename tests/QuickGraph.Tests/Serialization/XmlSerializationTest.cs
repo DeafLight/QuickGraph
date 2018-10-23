@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Xml.XPath;
-using System.Xml;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QuickGraph.Serialization;
+using System.Xml;
+using System.Xml.XPath;
 
 namespace QuickGraph.Tests.Serialization
 {
