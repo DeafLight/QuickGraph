@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using QuickGraph.Algorithms;
+using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Xml;
 using System.Xml.Schema;
-using System.Diagnostics.Contracts;
-using QuickGraph.Algorithms;
 
 namespace QuickGraph.Serialization
 {

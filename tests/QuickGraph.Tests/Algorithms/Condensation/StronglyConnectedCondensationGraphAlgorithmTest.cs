@@ -1,84 +1,71 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentAssertions;
 using QuickGraph.Serialization;
 using System.Collections.Generic;
+using System.Linq;
+using Xunit;
 
 namespace QuickGraph.Algorithms.Condensation
 {
-    [TestClass, PexClass]
-    public partial class StronglyConnectedCondensationGraphAlgorithmTest
+    public class StronglyConnectedCondensationGraphAlgorithmTest
     {
-        [TestMethod]
-        public void StronglyConnectedCondensateAll()
-        {
-            foreach (var g in TestGraphFactory.GetAdjacencyGraphs())
-                this.StronglyConnectedCondensate(g);
-        }
+        public static IEnumerable<object[]> AdjacencyGraphs =>
+            TestGraphFactory.GetAdjacencyGraphs()
+                .Select(x => new[] { x });
 
-        [PexMethod]
-        public void StronglyConnectedCondensate<TVertex, TEdge>(
-            [PexAssumeNotNull]IVertexAndEdgeListGraph<TVertex, TEdge> g)
+        [Theory]
+        [MemberData(nameof(AdjacencyGraphs))]
+        public void StronglyConnectedCondensate<TVertex, TEdge>(IVertexAndEdgeListGraph<TVertex, TEdge> g)
             where TEdge : IEdge<TVertex>
         {
-            var cg = g.CondensateStronglyConnected<TVertex, TEdge, AdjacencyGraph<TVertex,TEdge>>();
+            var cg = g.CondensateStronglyConnected<TVertex, TEdge, AdjacencyGraph<TVertex, TEdge>>();
 
             CheckVertexCount(g, cg);
             CheckEdgeCount(g, cg);
             CheckComponentCount(g, cg);
-            CheckDAG(g, cg);
+            CheckDAG(cg);
         }
 
-        private void CheckVertexCount<TVertex, TEdge>(
+        private static void CheckVertexCount<TVertex, TEdge>(
             IVertexAndEdgeListGraph<TVertex, TEdge> g,
             IMutableBidirectionalGraph<AdjacencyGraph<TVertex, TEdge>, CondensedEdge<TVertex, TEdge, AdjacencyGraph<TVertex, TEdge>>> cg)
             where TEdge : IEdge<TVertex>
         {
-            int count = 0;
+            var count = 0;
             foreach (var vertices in cg.Vertices)
                 count += vertices.VertexCount;
-            Assert.AreEqual(g.VertexCount, count, "VertexCount does not match");
+            g.VertexCount.Should().Be(count);
         }
 
-        private void CheckEdgeCount<TVertex, TEdge>(
+        private static void CheckEdgeCount<TVertex, TEdge>(
             IVertexAndEdgeListGraph<TVertex, TEdge> g,
             IMutableBidirectionalGraph<AdjacencyGraph<TVertex, TEdge>, CondensedEdge<TVertex, TEdge, AdjacencyGraph<TVertex, TEdge>>> cg)
             where TEdge : IEdge<TVertex>
         {
             // check edge count
-            int count = 0;
+            var count = 0;
             foreach (var edges in cg.Edges)
                 count += edges.Edges.Count;
             foreach (var vertices in cg.Vertices)
                 count += vertices.EdgeCount;
-            Assert.AreEqual(g.EdgeCount, count, "EdgeCount does not match");
+            g.EdgeCount.Should().Be(count);
         }
 
 
-        private void CheckComponentCount<TVertex, TEdge>(
+        private static void CheckComponentCount<TVertex, TEdge>(
             IVertexAndEdgeListGraph<TVertex, TEdge> g,
             IMutableBidirectionalGraph<AdjacencyGraph<TVertex, TEdge>, CondensedEdge<TVertex, TEdge, AdjacencyGraph<TVertex, TEdge>>> cg)
             where TEdge : IEdge<TVertex>
         {
             // check number of vertices = number of storngly connected components
-            IDictionary<TVertex, int> components;
-            int componentCount = g.StronglyConnectedComponents(out components);
-            Assert.AreEqual(componentCount, cg.VertexCount, "ComponentCount does not match");
+            var componentCount = g.StronglyConnectedComponents(out IDictionary<TVertex, int> components);
+            componentCount.Should().Be(cg.VertexCount);
         }
 
-        private void CheckDAG<TVertex, TEdge>(
-            IVertexAndEdgeListGraph<TVertex, TEdge> g,
+        private static void CheckDAG<TVertex, TEdge>(
             IMutableBidirectionalGraph<AdjacencyGraph<TVertex, TEdge>, CondensedEdge<TVertex, TEdge, AdjacencyGraph<TVertex, TEdge>>> cg)
             where TEdge : IEdge<TVertex>
         {
-            // check it's a dag
-            try
-            {
-                cg.TopologicalSort();
-            }
-            catch (NonAcyclicGraphException)
-            {
-                Assert.Fail("Graph is not a DAG.");
-            }
-
+            cg.Invoking(x => x.TopologicalSort()).Should().NotThrow<NonAcyclicGraphException>("Graph should be a DAG");
         }
     }
 }

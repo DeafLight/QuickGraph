@@ -1,33 +1,33 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentAssertions;
 using QuickGraph.Algorithms.AssigmentProblem;
+using Xunit;
 
 namespace QuickGraph.Tests.Algorithms.AssigmentProblem
 {
-    [TestClass]
     public class HungarianAlgorithmTest
     {
-        [TestMethod]
+        [Fact]
         public void RunCheck()
         {
             var matrix = new[,] { { 1, 2, 3 }, { 3, 3, 3 }, { 3, 3, 2 } };
             var algorithm = new HungarianAlgorithm(matrix);
             var res = algorithm.Run();
-            Assert.AreEqual(res[0], 0);
-            Assert.AreEqual(res[1], 1);
-            Assert.AreEqual(res[2], 2);
+            res.Should().HaveElementAt(0, 0);
+            res.Should().HaveElementAt(1, 1);
+            res.Should().HaveElementAt(2, 2);
         }
 
-        [TestMethod]
+        [Fact]
         public void IterationsCheck()
         {
             var matrix = new[,] { { 1, 2, 3 }, { 3, 3, 3 }, { 3, 3, 2 } };
             var algorithm = new HungarianAlgorithm(matrix);
             var iterations = algorithm.GetIterations();
             var res = algorithm.AgentsTasks;
-            Assert.AreEqual(res[0], 0);
-            Assert.AreEqual(res[1], 1);
-            Assert.AreEqual(res[2], 2);
-            Assert.AreEqual(iterations.Count, 3);
+            res.Should().HaveElementAt(0, 0);
+            res.Should().HaveElementAt(1, 1);
+            res.Should().HaveElementAt(2, 2);
+            iterations.Should().HaveCount(3);
         }
     }
 }
