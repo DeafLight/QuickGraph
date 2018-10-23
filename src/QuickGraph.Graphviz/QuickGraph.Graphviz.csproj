@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Dot\GraphvizColor.cs" />
+    <Compile Remove="Dot\GraphvizFont.cs" />
+    <Compile Remove="Dot\GraphvizPoint.cs" />
+    <Compile Remove="Dot\GraphvizSize.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="paket.references" />
     <None Remove="QuickGraph.Graphviz.csproj.vspscc" />
   </ItemGroup>

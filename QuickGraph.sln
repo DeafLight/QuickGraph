@@ -22,8 +22,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{7A2A3C07-B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extras", "Extras", "{DD28733B-860A-4FE6-8D68-119EB179F90E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickGraph.Samples", "src\QuickGraph.Samples\QuickGraph.Samples.csproj", "{8836CFAC-D2B0-47A5-9A91-03A2218BF6FD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickGraph.Glee", "src\QuickGraph.Glee\QuickGraph.Glee.csproj", "{ACDD0973-E5D9-4C2B-9EAF-B5B5DF44EDDD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickGraph.Petri", "src\QuickGraph.Petri\QuickGraph.Petri.csproj", "{6C49E8BF-82F4-40D0-AB49-8EA8A655A989}"
@@ -50,6 +48,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickGraph.Data", "src\Quic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickGraph.Graphviz", "src\QuickGraph.Graphviz\QuickGraph.Graphviz.csproj", "{03F87585-21D6-4E1A-96F1-F59D9F73CAD8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickGraph.Samples", "src\QuickGraph.Samples\QuickGraph.Samples.csproj", "{D04CF95C-6278-4811-91CF-07A5DA7E28A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,16 +59,6 @@ Global
 		ReleaseContractsReferences|Any CPU = ReleaseContractsReferences|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8836CFAC-D2B0-47A5-9A91-03A2218BF6FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8836CFAC-D2B0-47A5-9A91-03A2218BF6FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8836CFAC-D2B0-47A5-9A91-03A2218BF6FD}.DebugContracts|Any CPU.ActiveCfg = Debug|Any CPU
-		{8836CFAC-D2B0-47A5-9A91-03A2218BF6FD}.DebugContracts|Any CPU.Build.0 = Debug|Any CPU
-		{8836CFAC-D2B0-47A5-9A91-03A2218BF6FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8836CFAC-D2B0-47A5-9A91-03A2218BF6FD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8836CFAC-D2B0-47A5-9A91-03A2218BF6FD}.Release20|Any CPU.ActiveCfg = Release|Any CPU
-		{8836CFAC-D2B0-47A5-9A91-03A2218BF6FD}.Release20|Any CPU.Build.0 = Release|Any CPU
-		{8836CFAC-D2B0-47A5-9A91-03A2218BF6FD}.ReleaseContractsReferences|Any CPU.ActiveCfg = Release|Any CPU
-		{8836CFAC-D2B0-47A5-9A91-03A2218BF6FD}.ReleaseContractsReferences|Any CPU.Build.0 = Release|Any CPU
 		{ACDD0973-E5D9-4C2B-9EAF-B5B5DF44EDDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ACDD0973-E5D9-4C2B-9EAF-B5B5DF44EDDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACDD0973-E5D9-4C2B-9EAF-B5B5DF44EDDD}.DebugContracts|Any CPU.ActiveCfg = DebugContracts|Any CPU
@@ -189,12 +179,21 @@ Global
 		{03F87585-21D6-4E1A-96F1-F59D9F73CAD8}.Release20|Any CPU.Build.0 = Release|Any CPU
 		{03F87585-21D6-4E1A-96F1-F59D9F73CAD8}.ReleaseContractsReferences|Any CPU.ActiveCfg = Release|Any CPU
 		{03F87585-21D6-4E1A-96F1-F59D9F73CAD8}.ReleaseContractsReferences|Any CPU.Build.0 = Release|Any CPU
+		{D04CF95C-6278-4811-91CF-07A5DA7E28A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D04CF95C-6278-4811-91CF-07A5DA7E28A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D04CF95C-6278-4811-91CF-07A5DA7E28A2}.DebugContracts|Any CPU.ActiveCfg = Debug|Any CPU
+		{D04CF95C-6278-4811-91CF-07A5DA7E28A2}.DebugContracts|Any CPU.Build.0 = Debug|Any CPU
+		{D04CF95C-6278-4811-91CF-07A5DA7E28A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D04CF95C-6278-4811-91CF-07A5DA7E28A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D04CF95C-6278-4811-91CF-07A5DA7E28A2}.Release20|Any CPU.ActiveCfg = Release|Any CPU
+		{D04CF95C-6278-4811-91CF-07A5DA7E28A2}.Release20|Any CPU.Build.0 = Release|Any CPU
+		{D04CF95C-6278-4811-91CF-07A5DA7E28A2}.ReleaseContractsReferences|Any CPU.ActiveCfg = Release|Any CPU
+		{D04CF95C-6278-4811-91CF-07A5DA7E28A2}.ReleaseContractsReferences|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{8836CFAC-D2B0-47A5-9A91-03A2218BF6FD} = {7A2A3C07-B652-4759-AFC4-49378D764784}
 		{ACDD0973-E5D9-4C2B-9EAF-B5B5DF44EDDD} = {DD28733B-860A-4FE6-8D68-119EB179F90E}
 		{6C49E8BF-82F4-40D0-AB49-8EA8A655A989} = {DD28733B-860A-4FE6-8D68-119EB179F90E}
 		{1CCAFD2C-4A61-4F7F-986C-A2F575086344} = {DD28733B-860A-4FE6-8D68-119EB179F90E}
@@ -207,6 +206,7 @@ Global
 		{AAEADD1A-F0FD-4EFB-AF72-24EB9B82E36C} = {7A2A3C07-B652-4759-AFC4-49378D764784}
 		{0D24E06C-75B9-4E8B-9F27-C6D3F04AB187} = {7A2A3C07-B652-4759-AFC4-49378D764784}
 		{03F87585-21D6-4E1A-96F1-F59D9F73CAD8} = {7A2A3C07-B652-4759-AFC4-49378D764784}
+		{D04CF95C-6278-4811-91CF-07A5DA7E28A2} = {7A2A3C07-B652-4759-AFC4-49378D764784}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {83A26A8D-C5ED-4B41-8E8B-DEDF22F3F8C1}
