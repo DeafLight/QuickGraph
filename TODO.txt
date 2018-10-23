@@ -1,2 +1,10 @@
 Rewrite tests (Microsoft Pex is used but doesn't seem to exist in .NET Core / Standard)
-QuickGraph.Tests
+- QuickGraph.Tests
+
+Handle compilation problems in QuickGraph.FSA (map not defined, already present in 4.5 version)
+Removed in the meantime:
+- YC.FST Folder
+    - QuickGraph.FSA
+    - QuickGraph.FST
+- QuickGraph.FSA.Tests
+- QuickGraph.FST.Tests
