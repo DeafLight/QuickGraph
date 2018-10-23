@@ -1,3 +1,6 @@
+Glee project seems to be dead. Removed
+- QuickGraph.Glee
+
 Rewrite tests (Microsoft Pex is used but doesn't seem to exist in .NET Core / Standard)
 - Tests
     - QuickGraph.Perf
