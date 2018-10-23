@@ -1,11 +1,9 @@
-﻿using System;
+﻿using QuickGraph.Collections;
+using QuickGraph.Contracts;
+using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
-using QuickGraph.Contracts;
-using QuickGraph.Collections;
-using System.Linq;
 
 namespace QuickGraph
 {
@@ -596,16 +594,17 @@ namespace QuickGraph
                 MergeVertex(v, edgeFactory);
         }
 
-        public static BidirectionalGraph<TVertex, TEdge> LoadDot(string dotSource,
-            Func<string, IDictionary<string, string>, TVertex> vertexFunc,
-            Func<TVertex, TVertex, IDictionary<string, string>, TEdge> edgeFunc)
-        {
-            Func<bool, IMutableVertexAndEdgeSet<TVertex, TEdge>> createGraph = (allowParallelEdges) =>
-                new BidirectionalGraph<TVertex, TEdge>(allowParallelEdges);
+        // Until DotParser exists in .NET Standard
+        //public static BidirectionalGraph<TVertex, TEdge> LoadDot(string dotSource,
+        //    Func<string, IDictionary<string, string>, TVertex> vertexFunc,
+        //    Func<TVertex, TVertex, IDictionary<string, string>, TEdge> edgeFunc)
+        //{
+        //    Func<bool, IMutableVertexAndEdgeSet<TVertex, TEdge>> createGraph = (allowParallelEdges) =>
+        //        new BidirectionalGraph<TVertex, TEdge>(allowParallelEdges);
 
-            return (BidirectionalGraph<TVertex, TEdge>)
-                DotParserAdapter.LoadDot(dotSource, createGraph, vertexFunc, edgeFunc);
-        }
+        //    return (BidirectionalGraph<TVertex, TEdge>)
+        //        DotParserAdapter.LoadDot(dotSource, createGraph, vertexFunc, edgeFunc);
+        //}
 
         #region ICloneable Members
 

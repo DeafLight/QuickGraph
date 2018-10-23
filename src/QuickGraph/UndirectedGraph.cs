@@ -1,9 +1,8 @@
-﻿using System;
+﻿using QuickGraph.Collections;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
-using QuickGraph.Contracts;
-using QuickGraph.Collections;
 
 namespace QuickGraph
 {
@@ -79,16 +78,17 @@ namespace QuickGraph
             return adjacentVertices;
         }
 
-        public static UndirectedGraph<TVertex, TEdge> LoadDot(string dotSource,
-            Func<string, IDictionary<string, string>, TVertex> vertexFunc,
-            Func<TVertex, TVertex, IDictionary<string, string>, TEdge> edgeFunc)
-        {
-            Func<bool, IMutableVertexAndEdgeSet<TVertex, TEdge>> createGraph = (allowParallelEdges) =>
-                new UndirectedGraph<TVertex, TEdge>(allowParallelEdges);
+        // Until DotParser exists in .NET Standard
+        //public static UndirectedGraph<TVertex, TEdge> LoadDot(string dotSource,
+        //    Func<string, IDictionary<string, string>, TVertex> vertexFunc,
+        //    Func<TVertex, TVertex, IDictionary<string, string>, TEdge> edgeFunc)
+        //{
+        //    Func<bool, IMutableVertexAndEdgeSet<TVertex, TEdge>> createGraph = (allowParallelEdges) =>
+        //        new UndirectedGraph<TVertex, TEdge>(allowParallelEdges);
 
-            return (UndirectedGraph<TVertex, TEdge>)
-                DotParserAdapter.LoadDot(dotSource, createGraph, vertexFunc, edgeFunc);
-        }
+        //    return (UndirectedGraph<TVertex, TEdge>)
+        //        DotParserAdapter.LoadDot(dotSource, createGraph, vertexFunc, edgeFunc);
+        //}
 
         public BidirectionalGraph<TVertex, TEdge> ToBidirectionalGraph()
         {
