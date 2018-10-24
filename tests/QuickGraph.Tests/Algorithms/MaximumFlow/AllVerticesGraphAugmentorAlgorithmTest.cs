@@ -1,29 +1,31 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Pex.Framework;
+﻿using FluentAssertions;
 using QuickGraph.Serialization;
-using QuickGraph.Collections;
+using Xunit;
 
 namespace QuickGraph.Algorithms.MaximumFlow
 {
-    [TestClass]
-    public partial class AllVerticesGraphAugmentorAlgorithmTest
+    public class AllVerticesGraphAugmentorAlgorithmTest
     {
-        [TestMethod]
-        public void AugmentAll()
+        public static TheoryData<IVertexAndEdgeListGraph<string, Edge<string>>> AdjacencyGraphs
         {
-            foreach (var g in TestGraphFactory.GetAdjacencyGraphs())
-                this.Augment(g);
+            get
+            {
+                var data = new TheoryData<IVertexAndEdgeListGraph<string, Edge<string>>>();
+                foreach (var g in TestGraphFactory.GetAdjacencyGraphs())
+                    data.Add(g);
+
+                return data;
+            }
         }
 
-        [PexMethod]
-        public void Augment(
-            IMutableVertexAndEdgeListGraph<string, Edge<string>> g)
+        [Theory]
+        [MemberData(nameof(AdjacencyGraphs))]
+        public void Augment(IMutableVertexAndEdgeListGraph<string, Edge<string>> g)
         {
-            int vertexCount = g.VertexCount;
-            int edgeCount = g.EdgeCount;
-            int vertexId = g.VertexCount+1;
-            int edgeID = g.EdgeCount+1;
+            var vertexCount = g.VertexCount;
+            var edgeCount = g.EdgeCount;
+            var vertexId = g.VertexCount + 1;
+            var edgeID = g.EdgeCount + 1;
             using (var augmentor = new AllVerticesGraphAugmentorAlgorithm<string, Edge<string>>(
                 g,
                 () => (vertexId++).ToString(),
@@ -35,23 +37,23 @@ namespace QuickGraph.Algorithms.MaximumFlow
                 VerifySourceConnector(g, augmentor);
                 VerifySinkConnector(g, augmentor);
             }
-            Assert.AreEqual(g.VertexCount, vertexCount);
-            Assert.AreEqual(g.EdgeCount, edgeCount);
+            g.VertexCount.Should().Be(vertexCount);
+            g.EdgeCount.Should().Be(edgeCount);
         }
 
-        private static void VerifyCount<TVertex,TEdge>(
-            IMutableVertexAndEdgeListGraph<TVertex,TEdge> g, 
-            AllVerticesGraphAugmentorAlgorithm<TVertex,TEdge> augmentor,
+        private static void VerifyCount<TVertex, TEdge>(
+            IMutableVertexAndEdgeListGraph<TVertex, TEdge> g,
+            AllVerticesGraphAugmentorAlgorithm<TVertex, TEdge> augmentor,
             int vertexCount)
             where TEdge : IEdge<TVertex>
         {
-            Assert.AreEqual(vertexCount + 2, g.VertexCount);
-            Assert.IsTrue(g.ContainsVertex(augmentor.SuperSource));
-            Assert.IsTrue(g.ContainsVertex(augmentor.SuperSink));
+            g.VertexCount.Should().Be(vertexCount + 2);
+            g.ContainsVertex(augmentor.SuperSource).Should().BeTrue();
+            g.ContainsVertex(augmentor.SuperSink).Should().BeTrue();
         }
 
         private static void VerifySourceConnector<TVertex, TEdge>(
-            IMutableVertexAndEdgeListGraph<TVertex, TEdge> g, 
+            IMutableVertexAndEdgeListGraph<TVertex, TEdge> g,
             AllVerticesGraphAugmentorAlgorithm<TVertex, TEdge> augmentor)
             where TEdge : IEdge<TVertex>
         {
@@ -61,12 +63,12 @@ namespace QuickGraph.Algorithms.MaximumFlow
                     continue;
                 if (v.Equals(augmentor.SuperSink))
                     continue;
-                Assert.IsTrue(g.ContainsEdge(augmentor.SuperSource, v));
+                g.ContainsEdge(augmentor.SuperSource, v).Should().BeTrue();
             }
         }
 
         private static void VerifySinkConnector<TVertex, TEdge>(
-            IMutableVertexAndEdgeListGraph<TVertex, TEdge> g, 
+            IMutableVertexAndEdgeListGraph<TVertex, TEdge> g,
             AllVerticesGraphAugmentorAlgorithm<TVertex, TEdge> augmentor)
             where TEdge : IEdge<TVertex>
         {
@@ -76,15 +78,14 @@ namespace QuickGraph.Algorithms.MaximumFlow
                     continue;
                 if (v.Equals(augmentor.SuperSink))
                     continue;
-                Assert.IsTrue(g.ContainsEdge(v, augmentor.SuperSink));
+                g.ContainsEdge(v, augmentor.SuperSink).Should().BeTrue();
             }
         }
-
     }
 
     public sealed class StringVertexFactory
     {
-        private int id = 0;
+        private int id;
 
         public StringVertexFactory()
             : this("Super")
@@ -92,14 +93,14 @@ namespace QuickGraph.Algorithms.MaximumFlow
 
         public StringVertexFactory(string prefix)
         {
-            this.Prefix = prefix;
+            Prefix = prefix;
         }
 
         public string Prefix { get; set; }
 
         public string CreateVertex()
         {
-            return this.Prefix + (++id).ToString();
+            return Prefix + (++id);
         }
     }
 }

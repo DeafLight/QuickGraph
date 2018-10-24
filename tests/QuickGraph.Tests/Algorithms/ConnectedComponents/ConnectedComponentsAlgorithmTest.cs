@@ -1,57 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Pex.Framework;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentAssertions;
 using QuickGraph.Serialization;
-using System.Diagnostics.Contracts;
-using System.Diagnostics;
-using QuickGraph.Algorithms.ConnectedComponents;
 using System.Linq;
+using Xunit;
 
 namespace QuickGraph.Algorithms.ConnectedComponents
 {
-    [TestClass, PexClass]
-    public partial class ConnectedComponentsAlgorithmTest
+    public class ConnectedComponentsAlgorithmTest
     {
-        [TestMethod]
-        [TestCategory(TestCategories.LongRunning)]
-        public void ConnectedComponentsAll()
+        public static TheoryData<UndirectedGraph<string, IEdge<string>>> UndirectedGraphs
         {
-            foreach (var g in TestGraphFactory.GetUndirectedGraphs())
+            get
             {
-                while (g.EdgeCount > 0)
-                {
-                    this.Compute(g);
-                    g.RemoveEdge(Enumerable.First(g.Edges));
-                }
+                var data = new TheoryData<UndirectedGraph<string, IEdge<string>>>();
+                foreach (var g in TestGraphFactory.GetUndirectedGraphs())
+                    data.Add(g);
+
+                return data;
             }
         }
 
-        [PexMethod]
-        public void Compute<TVertex, TEdge>([PexAssumeNotNull]IUndirectedGraph<TVertex, TEdge> g)
+        [Theory]
+        [MemberData(nameof(UndirectedGraphs))]
+        [Trait(TestCategories.Category, TestCategories.LongRunning)]
+        public void Compute<TVertex, TEdge>(UndirectedGraph<TVertex, TEdge> g)
              where TEdge : IEdge<TVertex>
         {
-            var dfs = new ConnectedComponentsAlgorithm<TVertex, TEdge>(g);
-            dfs.Compute();
-            if (g.VertexCount == 0)
+            while (g.EdgeCount > 0)
             {
-                Assert.IsTrue(dfs.ComponentCount == 0);
-                return;
-            }
-
-            Assert.IsTrue(0 < dfs.ComponentCount);
-            Assert.IsTrue(dfs.ComponentCount <= g.VertexCount);
-            foreach (var kv in dfs.Components)
-            {
-                Assert.IsTrue(0 <= kv.Value);
-                Assert.IsTrue(kv.Value < dfs.ComponentCount, "{0} < {1}", kv.Value, dfs.ComponentCount);
-            }
-
-            foreach (var vertex in g.Vertices)
-                foreach (var edge in g.AdjacentEdges(vertex))
+                var dfs = new ConnectedComponentsAlgorithm<TVertex, TEdge>(g);
+                dfs.Compute();
+                if (g.VertexCount == 0)
                 {
-                    Assert.AreEqual(dfs.Components[edge.Source], dfs.Components[edge.Target]);
+                    dfs.ComponentCount.Should().Be(0);
+                    return;
                 }
+
+                dfs.ComponentCount.Should().BeGreaterOrEqualTo(0);
+                dfs.ComponentCount.Should().BeLessOrEqualTo(g.VertexCount);
+                foreach (var kv in dfs.Components)
+                {
+                    kv.Value.Should().BeGreaterOrEqualTo(0);
+                    kv.Value.Should().BeLessThan(dfs.ComponentCount);
+                }
+
+                foreach (var vertex in g.Vertices)
+                    foreach (var edge in g.AdjacentEdges(vertex))
+                    {
+                        dfs.Components[edge.Source].Should().Be(dfs.Components[edge.Target]);
+                    }
+
+                g.RemoveEdge(g.Edges.First());
+            }
         }
     }
 }

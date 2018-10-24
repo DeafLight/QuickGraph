@@ -1,49 +1,44 @@
-﻿using Microsoft.Pex.Framework;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QuickGraph.Algorithms;
+﻿using QuickGraph.Algorithms;
 using QuickGraph.Serialization;
+using System.Linq;
+using Xunit;
 
 namespace QuickGraph.Tests.Algorithms.MaximumFlow
 {
-    [TestClass]
-    public partial class EdmondsKarpMaximumFlowAlgorithmTest
+    public class EdmondsKarpMaximumFlowAlgorithmTest
     {
-        [TestMethod]
-        public void EdmondsKarpMaxFlowAll()
-        {
+        private static readonly EdgeFactory<string, Edge<string>> _edgeFactory = (source, target) => new Edge<string>(source, target);
 
-            foreach (var g in TestGraphFactory.GetAdjacencyGraphs())
+        public static TheoryData<IVertexAndEdgeListGraph<string, Edge<string>>, EdgeFactory<string, Edge<string>>> NonEmptyAdjacencyGraphs
+        {
+            get
             {
-                if (g.VertexCount > 0)
-                    this.EdmondsKarpMaxFlow(g, (source, target) => new Edge<string>(source, target));
+                var data = new TheoryData<IVertexAndEdgeListGraph<string, Edge<string>>, EdgeFactory<string, Edge<string>>>();
+                foreach (var g in TestGraphFactory.GetAdjacencyGraphs()
+                    .Where(x => x.VertexCount > 0))
+                    data.Add(g, _edgeFactory);
+
+                return data;
             }
         }
 
-
-        [PexMethod]
-        public void EdmondsKarpMaxFlow<TVertex, TEdge>([PexAssumeNotNull]IMutableVertexAndEdgeListGraph<TVertex, TEdge> g, 
-            EdgeFactory<TVertex, TEdge> edgeFactory)
-            where TEdge : IEdge<TVertex>
+        [Theory]
+        [MemberData(nameof(NonEmptyAdjacencyGraphs))]
+        public void EdmondsKarpMaxFlow(
+            AdjacencyGraph<string, Edge<string>> g,
+            EdgeFactory<string, Edge<string>> edgeFactory)
         {
-            PexAssume.IsTrue(g.VertexCount > 0);
-
             foreach (var source in g.Vertices)
-                foreach (var sink in g.Vertices)
-                {
-                    if (source.Equals(sink)) continue;
-
-                    RunMaxFlowAlgorithm<TVertex, TEdge>(g, edgeFactory, source, sink);
-                }
+                foreach (var sink in g.Vertices.Where(x => !x.Equals(source)))
+                    RunMaxFlowAlgorithm(g, edgeFactory, source, sink);
         }
 
-        private static double RunMaxFlowAlgorithm<TVertex, TEdge>(IMutableVertexAndEdgeListGraph<TVertex, TEdge> g, EdgeFactory<TVertex, TEdge> edgeFactory, TVertex source, TVertex sink) where TEdge : IEdge<TVertex>
+        private static double RunMaxFlowAlgorithm(IMutableVertexAndEdgeListGraph<string, Edge<string>> g, EdgeFactory<string, Edge<string>> edgeFactory, string source, string sink)
         {
-            TryFunc<TVertex, TEdge> flowPredecessors;
-            var flow = AlgorithmExtensions.MaximumFlowEdmondsKarp<TVertex, TEdge>(
-                g,
+            var flow = g.MaximumFlowEdmondsKarp(
                 e => 1,
                 source, sink,
-                out flowPredecessors,
+                out TryFunc<string, Edge<string>> flowPredecessors,
                 edgeFactory
                 );
 

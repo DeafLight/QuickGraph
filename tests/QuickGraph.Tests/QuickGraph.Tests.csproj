@@ -48,20 +48,11 @@
     <Compile Remove="Algorithms\AlgorithmExtensionsTest.cs" />
     <Compile Remove="Algorithms\BipartiteDimensionAlgorithmTest.cs" />
     <Compile Remove="Algorithms\ChromaticPolinomialAlgorithmTest.cs" />
-    <Compile Remove="Algorithms\Condensation\WeaklyConnectedCondensationGraphTest.cs" />
-    <Compile Remove="Algorithms\ConnectedComponents\ConnectedComponentsAlgorithmTest.cs" />
-    <Compile Remove="Algorithms\ConnectedComponents\WeaklyConnectedComponentsAlgorithmTest.cs" />
     <Compile Remove="Algorithms\DomaticPartitionAlgorithmTest.cs" />
     <Compile Remove="Algorithms\EulerianTrailAlgorithmTest.cs" />
     <Compile Remove="Algorithms\InducedPathsTest.cs" />
     <Compile Remove="Algorithms\MaxCardinalityTest.cs" />
     <Compile Remove="Algorithms\MaximumBipartiteMatchingAlgorithmTest.cs" />
-    <Compile Remove="Algorithms\MaximumFlow\AllVerticesGraphAugmentorAlgorithmTest.cs" />
-    <Compile Remove="Algorithms\MaximumFlow\EdmondsKarpMaximumFlowAlgorithmTest.cs" />
-    <Compile Remove="Algorithms\MinimumSpanningTree\MinimumSpanningTreeTest.cs" />
-    <Compile Remove="Algorithms\RandomWalks\CyclePoppingRandomTreeAlgorithmTest.cs" />
-    <Compile Remove="Algorithms\RandomWalks\EdgeChainTest.cs" />
-    <Compile Remove="Algorithms\RandomWalks\RandomWalkAlgorithmTest.cs" />
     <Compile Remove="Algorithms\RankedShortestPath\HoffmanPavleyRankedShortestPathAlgorithmTest.cs" />
     <Compile Remove="Algorithms\Search\BestFirstFrontierSearchAlgorithmTest.cs" />
     <Compile Remove="Algorithms\Search\BidirectionalDepthFirstSearchAlgorithmTest.cs" />
@@ -156,6 +147,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.3.2" />
     <PackageReference Include="MSTest.TestFramework" Version="1.3.2" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.analyzers" Version="0.10.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0">
@@ -166,9 +158,6 @@
 
   <ItemGroup>
     <Folder Include="Algorithms\AssigmentProblem\" />
-    <Folder Include="Algorithms\MaximumFlow\" />
-    <Folder Include="Algorithms\MinimumSpanningTree\" />
-    <Folder Include="Algorithms\RandomWalks\" />
     <Folder Include="Algorithms\TSP\" />
     <Folder Include="Collections\" />
     <Folder Include="Factories\" />

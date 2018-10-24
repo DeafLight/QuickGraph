@@ -1,23 +1,25 @@
-﻿using System;
-using System.Linq;
-using QuickGraph.Algorithms.Observers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Pex.Framework;
+﻿using QuickGraph.Algorithms.Observers;
 using QuickGraph.Serialization;
+using Xunit;
 
 namespace QuickGraph.Algorithms.RandomWalks
 {
-    [TestClass]
     public class RandomWalkAlgorithmTest
     {
-        [TestMethod]
-        public void RoundRobinAll()
+        public static TheoryData<IVertexAndEdgeListGraph<string, Edge<string>>> AdjacencyGraphs
         {
-            foreach (var g in TestGraphFactory.GetAdjacencyGraphs())
-                this.RoundRobinTest(g);
+            get
+            {
+                var data = new TheoryData<IVertexAndEdgeListGraph<string, Edge<string>>>();
+                foreach (var g in TestGraphFactory.GetAdjacencyGraphs())
+                    data.Add(g);
+
+                return data;
+            }
         }
 
-        [PexMethod]
+        [Theory]
+        [MemberData(nameof(AdjacencyGraphs))]
         public void RoundRobinTest<TVertex, TEdge>(IVertexListGraph<TVertex, TEdge> g)
             where TEdge : IEdge<TVertex>
         {
@@ -26,14 +28,16 @@ namespace QuickGraph.Algorithms.RandomWalks
 
             foreach (var root in g.Vertices)
             {
-                var walker =
-                    new RandomWalkAlgorithm<TVertex, TEdge>(g);
-                walker.EdgeChain = new NormalizedMarkovEdgeChain<TVertex, TEdge>();
+                var walker = new RandomWalkAlgorithm<TVertex, TEdge>(g)
+                {
+                    EdgeChain = new NormalizedMarkovEdgeChain<TVertex, TEdge>()
+                };
                 walker.Generate(root);
             }
         }
 
-        [PexMethod]
+        [Theory]
+        [MemberData(nameof(AdjacencyGraphs))]
         public void RoundRobinTestWithVisitor<TVertex, TEdge>(IVertexListGraph<TVertex, TEdge> g)
             where TEdge : IEdge<TVertex>
         {
@@ -42,12 +46,13 @@ namespace QuickGraph.Algorithms.RandomWalks
 
             foreach (var root in g.Vertices)
             {
-                var walker =
-                    new RandomWalkAlgorithm<TVertex, TEdge>(g);
-                walker.EdgeChain = new NormalizedMarkovEdgeChain<TVertex, TEdge>();
+                var walker = new RandomWalkAlgorithm<TVertex, TEdge>(g)
+                {
+                    EdgeChain = new NormalizedMarkovEdgeChain<TVertex, TEdge>()
+                };
 
                 var vis = new EdgeRecorderObserver<TVertex, TEdge>();
-                using(vis.Attach(walker))
+                using (vis.Attach(walker))
                     walker.Generate(root);
             }
         }

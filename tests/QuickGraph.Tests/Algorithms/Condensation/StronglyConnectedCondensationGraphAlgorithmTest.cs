@@ -1,16 +1,23 @@
 ﻿using FluentAssertions;
 using QuickGraph.Serialization;
 using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace QuickGraph.Algorithms.Condensation
 {
     public class StronglyConnectedCondensationGraphAlgorithmTest
     {
-        public static IEnumerable<object[]> AdjacencyGraphs =>
-            TestGraphFactory.GetAdjacencyGraphs()
-                .Select(x => new[] { x });
+        public static TheoryData<IVertexAndEdgeListGraph<string, Edge<string>>> AdjacencyGraphs
+        {
+            get
+            {
+                var data = new TheoryData<IVertexAndEdgeListGraph<string, Edge<string>>>();
+                foreach (var g in TestGraphFactory.GetAdjacencyGraphs())
+                    data.Add(g);
+
+                return data;
+            }
+        }
 
         [Theory]
         [MemberData(nameof(AdjacencyGraphs))]

@@ -69,12 +69,12 @@ namespace QuickGraph.Serialization
             return g;
         }
 
-        public static IEnumerable<UndirectedGraph<string, Edge<string>>> GetUndirectedGraphs()
+        public static IEnumerable<UndirectedGraph<string, IEdge<string>>> GetUndirectedGraphs()
         {
-            yield return new UndirectedGraph<string, Edge<string>>();
+            yield return new UndirectedGraph<string, IEdge<string>>();
             foreach (var g in GetAdjacencyGraphs())
             {
-                var ug = new UndirectedGraph<string, Edge<string>>();
+                var ug = new UndirectedGraph<string, IEdge<string>>();
                 ug.AddVerticesAndEdgeRange(g.Edges);
                 yield return ug;
             }

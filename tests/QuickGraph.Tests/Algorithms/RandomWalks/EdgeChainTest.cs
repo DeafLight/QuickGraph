@@ -1,33 +1,33 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using QuickGraph.Algorithms.Observers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Pex.Framework;
+﻿using QuickGraph.Algorithms.Observers;
 using QuickGraph.Serialization;
+using Xunit;
 
 namespace QuickGraph.Algorithms.RandomWalks
 {
-    [TestClass]
     public class EdgeChainTest
     {
-        [TestMethod]
-        public void GenerateAll()
+        public static TheoryData<IVertexAndEdgeListGraph<string, Edge<string>>> AdjacencyGraphs
         {
-            foreach (var g in TestGraphFactory.GetAdjacencyGraphs())
-                this.Generate(g);
+            get
+            {
+                var data = new TheoryData<IVertexAndEdgeListGraph<string, Edge<string>>>();
+                foreach (var g in TestGraphFactory.GetAdjacencyGraphs())
+                    data.Add(g);
+
+                return data;
+            }
         }
 
-        [PexMethod]
+        [Theory]
+        [MemberData(nameof(AdjacencyGraphs))]
         public void Generate<TVertex, TEdge>(IVertexListGraph<TVertex, TEdge> g)
             where TEdge : IEdge<TVertex>
         {
-
             foreach (var v in g.Vertices)
             {
                 var walker = new RandomWalkAlgorithm<TVertex, TEdge>(g);
                 var vis = new EdgeRecorderObserver<TVertex, TEdge>();
-                using(vis.Attach(walker))
+                using (vis.Attach(walker))
                     walker.Generate(v);
             }
         }

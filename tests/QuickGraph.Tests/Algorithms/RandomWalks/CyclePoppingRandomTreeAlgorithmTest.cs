@@ -1,15 +1,12 @@
-﻿using System;
-using QuickGraph.Algorithms.RandomWalks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QuickGraph.Serialization;
-using QuickGraph.Collections;
+﻿using QuickGraph.Serialization;
+using System;
+using Xunit;
 
 namespace QuickGraph.Algorithms.RandomWalks
 {
-    [TestClass]
     public class CyclePoppingRandomTreeAlgorithmTest
     {
-        [TestMethod]
+        [Fact]
         public void CyclePoppingRandomTreeAll()
         {
             foreach (var g in TestGraphFactory.GetAdjacencyGraphs())
@@ -22,28 +19,28 @@ namespace QuickGraph.Algorithms.RandomWalks
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Repro13160()
         {
-            // create a new graph			
+            // create a new graph
             var graph = new BidirectionalGraph<int, SEquatableEdge<int>>(false);
 
-            // adding vertices		    
+            // adding vertices
             for (int i = 0; i < 3; ++i)
-                for(int j = 0;j<3;++j)
+                for (int j = 0; j < 3; ++j)
                     graph.AddVertex(i * 3 + j);
 
-            // adding Width edges			    
+            // adding Width edges
             for (int i = 0; i < 3; ++i)
-                for(int j = 0; j < 2;++j)
-                graph.AddEdge(new SEquatableEdge<int>(i * 3 +j, i * 3 + j + 1));
+                for (int j = 0; j < 2; ++j)
+                    graph.AddEdge(new SEquatableEdge<int>(i * 3 + j, i * 3 + j + 1));
 
-            // adding Length edges			    
+            // adding Length edges
             for (int i = 0; i < 2; ++i)
-                for(int j = 0; j < 3;++j)
-                graph.AddEdge(new SEquatableEdge<int>(i * 3 + j, (i+1) * 3 + j));
+                for (int j = 0; j < 3; ++j)
+                    graph.AddEdge(new SEquatableEdge<int>(i * 3 + j, (i + 1) * 3 + j));
 
-            // create cross edges 
+            // create cross edges
             foreach (var e in graph.Edges)
                 graph.AddEdge(new SEquatableEdge<int>(e.Target, e.Source));
 
@@ -55,11 +52,11 @@ namespace QuickGraph.Algorithms.RandomWalks
 
             var target = new CyclePoppingRandomTreeAlgorithm<int, SEquatableEdge<int>>(graph);
             target.Compute(2);
-            foreach(var kv in target.Successors)
+            foreach (var kv in target.Successors)
                 Console.WriteLine("{0}: {1}", kv.Key, kv.Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsolatedVertices()
         {
             var g = new AdjacencyGraph<int, Edge<int>>(true);
@@ -70,7 +67,7 @@ namespace QuickGraph.Algorithms.RandomWalks
             target.RandomTree();
         }
 
-        [TestMethod]
+        [Fact]
         public void IsolatedVerticesWithRoot()
         {
             var g = new AdjacencyGraph<int, Edge<int>>(true);
@@ -81,10 +78,10 @@ namespace QuickGraph.Algorithms.RandomWalks
             target.RandomTreeWithRoot(0);
         }
 
-        [TestMethod]
+        [Fact]
         public void RootIsNotAccessible()
         {
-            AdjacencyGraph<int, Edge<int>> g = new AdjacencyGraph<int, Edge<int>>(true);
+            var g = new AdjacencyGraph<int, Edge<int>>(true);
             g.AddVertex(0);
             g.AddVertex(1);
             g.AddEdge(new Edge<int>(0, 1));

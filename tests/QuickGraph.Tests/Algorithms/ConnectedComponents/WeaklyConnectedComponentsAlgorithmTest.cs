@@ -1,49 +1,49 @@
-using System;
-using System.Collections.Generic;
-using Microsoft.Pex.Framework;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
 using QuickGraph.Serialization;
-using System.Diagnostics.Contracts;
-using System.Diagnostics;
-using QuickGraph.Algorithms.ConnectedComponents;
+using Xunit;
 
 namespace QuickGraph.Algorithms.ConnectedComponents
 {
-    [TestClass, PexClass]
-    public partial class WeaklyConnectedComponentsAlgorithmTest
+    public class WeaklyConnectedComponentsAlgorithmTest
     {
-        [TestMethod]
-        public void WeaklyConnectedComponentsAll()
+        public static TheoryData<IVertexAndEdgeListGraph<string, Edge<string>>> AdjacencyGraphs
         {
-            foreach (var g in TestGraphFactory.GetAdjacencyGraphs())
-                this.Compute(g);
+            get
+            {
+                var data = new TheoryData<IVertexAndEdgeListGraph<string, Edge<string>>>();
+                foreach (var g in TestGraphFactory.GetAdjacencyGraphs())
+                    data.Add(g);
+
+                return data;
+            }
         }
 
-        [PexMethod]
-        public void Compute<TVertex,TEdge>([PexAssumeNotNull]IVertexListGraph<TVertex, TEdge> g)
+        [Theory]
+        [MemberData(nameof(AdjacencyGraphs))]
+        public void Compute<TVertex, TEdge>(IVertexListGraph<TVertex, TEdge> g)
             where TEdge : IEdge<TVertex>
         {
-            var dfs = 
-                new WeaklyConnectedComponentsAlgorithm<TVertex,TEdge>(g);
+            var dfs =
+                new WeaklyConnectedComponentsAlgorithm<TVertex, TEdge>(g);
             dfs.Compute();
             if (g.VertexCount == 0)
             {
-                Assert.IsTrue(dfs.ComponentCount == 0);
+                dfs.ComponentCount.Should().Be(0);
                 return;
             }
 
-            Assert.IsTrue(0 < dfs.ComponentCount);
-            Assert.IsTrue(dfs.ComponentCount <= g.VertexCount);
-            foreach(var kv in dfs.Components)
+            dfs.ComponentCount.Should().BePositive();
+            dfs.ComponentCount.Should().BeLessOrEqualTo(g.VertexCount);
+            foreach (var kv in dfs.Components)
             {
-                Assert.IsTrue(0 <= kv.Value);
-                Assert.IsTrue(kv.Value < dfs.ComponentCount, "{0} < {1}", kv.Value, dfs.ComponentCount);
+                kv.Value.Should().BeGreaterOrEqualTo(0);
+                kv.Value.Should().BeLessThan(dfs.ComponentCount);
             }
 
-            foreach(var vertex in g.Vertices)
+            foreach (var vertex in g.Vertices)
                 foreach (var edge in g.OutEdges(vertex))
                 {
-                    Assert.AreEqual(dfs.Components[edge.Source], dfs.Components[edge.Target]);
+                    dfs.Components[edge.Source].Should().Be(dfs.Components[edge.Target]);
                 }
         }
     }
